@@ -9,7 +9,11 @@ const { seekerRoute } = require('./routes/seekerRoute')
 const { AdminRoute } = require('./routes/AdminRoute')
 const app = express();
 app.use(express.json());
-app.use(cors())
+app.use(cors({
+  origin: 'https://recruite-x-front-end-ify8.vercel.app', // frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
 app.use("/upload", express.static("./uploads"));
 //http://localhost:9000/upload/daya.jpg
 app.use(expressFileupload())
