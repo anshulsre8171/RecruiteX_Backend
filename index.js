@@ -28,6 +28,6 @@ app.use("/api", recruiterRoute);
 app.use("/api", seekerRoute);
 
 
-app.listen(process.env.MONGODB_PORT || 9000, () => {
+app.listen(9000, () => {
     console.log("Server is Running at 9000 port")
 })
