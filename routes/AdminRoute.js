@@ -3,7 +3,8 @@ const AdminRoute=express.Router()
 const {AdminTable} =require('../models/AdminModel');
 const {seekerTable}=require('../models/seekerModel');
 const {recruiterTable}=require('../models/recruiterModel');
-
+const jwt = require("jsonwebtoken");
+const tokenVerify=require('../middleware/TokenVrify')
 
 AdminRoute.post("/Admin-register",async(req,res)=>{
   const {name,email,contact,password,location} =req.body;
@@ -26,11 +27,16 @@ const {email,password}=req.body
 
 
       const result = await AdminTable.findOne({email,password}); 
+
       if(result) {
+      const token = jwt.sign({ id: result._id },process.env.JWTCODE, { expiresIn: "3m" })
+      const results={...result,token}
+      console.log(results);
+      
       res.json({
         code: 200,
         message: "Login Successfull !...",
-        data:result
+        data:results
       });
     } else {
       res.json({
@@ -41,7 +47,7 @@ const {email,password}=req.body
     }
   });
 
-AdminRoute.get("/admin-seekerlist",async(req,res)=>{
+AdminRoute.get("/admin-seekerlist",tokenVerify,async(req,res)=>{
    try{
     const result= await seekerTable.find();
     res.json({
@@ -116,7 +122,7 @@ AdminRoute.put("/admin-recruiterblock/:_id",async(req,res)=>{
   })
 })
 
-AdminRoute.delete(`/deleterec/:_id`,async(req,res)=>{
+AdminRoute.delete(`/deleterec/:_id`,tokenVerify,async(req,res)=>{
   const _id=req.params._id
   const result=await recruiterTable.deleteOne({_id:_id})
     res.json({
@@ -126,9 +132,9 @@ AdminRoute.delete(`/deleterec/:_id`,async(req,res)=>{
   })
 })
 
-AdminRoute.delete(`/deletesec/:_id`,async(req,res)=>{
+AdminRoute.delete(`/deletesec/:_id`,tokenVerify,async(req,res)=>{
   const _id=req.params._id
-  const result=await recruiterTable.deleteOne({_id:_id})
+  const result=await seekerTable.deleteOne({_id:_id})
     res.json({
     code:200,
     message:"Data Delete Successfull",

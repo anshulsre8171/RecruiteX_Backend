@@ -21,7 +21,7 @@ app.use(expressFileupload())
 
 const DbConnect = async () => {
     //const con = await mongoose.connect("mongodb://localhost:27017/recruitex");
-     const con = await mongoose.connect(process.env.MONGODB_URI)
+    const con = await mongoose.connect(process.env.MONGODB_URI)
     if (con) {
         console.log("Connected to MongoDB...");
     }
