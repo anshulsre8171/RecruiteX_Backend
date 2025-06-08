@@ -17,7 +17,7 @@ recruiterRoute.post("/recruiter-register",async(req,res)=>{
         }
     })
    const data=  new recruiterTable({name: name,email:email,contact:contact,password:password,location:location,logo:logo.name})
-  const isExist= await seekerTable.findOne({email:email})
+  const isExist= await recruiterTable.findOne({email:email})
   if(isExist){
     res.json({
     code: 302,
