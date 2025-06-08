@@ -30,12 +30,11 @@ AdminRoute.post("/Admin-login", async (req, res) => {
 
     if (result) {
       const token = jwt.sign({ id: result._id }, process.env.JWTCODE, { expiresIn: "3m" });
-      const userData = result.toObject();
-      const results = { ...userData, token };
       return res.json({
         code: 200,
         message: "Login Successful!",
-        data: results
+        data: result,
+        token:token
       });
     } else {
       return res.json({
