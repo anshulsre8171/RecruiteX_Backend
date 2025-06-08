@@ -23,29 +23,34 @@ AdminRoute.post("/Admin-register",async(req,res)=>{
 })
 
 AdminRoute.post("/Admin-login", async (req, res) => {
-const {email,password}=req.body
+  try {
+    const { email, password } = req.body;
 
+    const result = await AdminTable.findOne({ email, password });
 
-      const result = await AdminTable.findOne({email,password}); 
-
-      if(result) {
-      const token = jwt.sign({ id: result._id },process.env.JWTCODE, { expiresIn: "3m" })
-      const results={...result,token}
-      console.log(results);
-      
-      res.json({
+    if (result) {
+      const token = jwt.sign({ id: result._id }, process.env.JWTCODE, { expiresIn: "3m" });
+      const userData = result.toObject();
+      const results = { ...userData, token };
+      return res.json({
         code: 200,
-        message: "Login Successfull !...",
-        data:results
+        message: "Login Successful!",
+        data: results
       });
     } else {
-      res.json({
+      return res.json({
         code: 404,
         message: "Invalid Email or Password"
-    
       });
     }
-  });
+  } catch (error) {
+    console.error("Login Error:", error);
+    return res.status(500).json({
+      code: 500,
+      message: "Internal Server Error"
+    });
+  }
+});
 
 AdminRoute.get("/admin-seekerlist",tokenVerify,async(req,res)=>{
    try{
