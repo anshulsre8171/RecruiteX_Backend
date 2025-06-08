@@ -5,7 +5,7 @@ const { jobPostTable } = require('../models/jobpost');
 const { recruiterTable } = require('../models/recruiterModel');
 const { appliedJobTable } = require('../models/appliedJob');
 seekerRoute.post("/seeker-register", async (req, res) => {
-  const { name, email, contact, password, qualification, location, preference } = req.body;
+  const { name, email, contact, password, qualification, location, preference } = req.body;  
   let img = req.files.img;
   let resume = req.files.resume;
   img.mv("uploads/" + img.name, (err) => {
@@ -19,11 +19,20 @@ seekerRoute.post("/seeker-register", async (req, res) => {
     }
   })
   const data = new seekerTable({ name: name, img: img.name, email: email, contact: contact, password: password, qualification: qualification, location: location, preference: preference, resume: resume.name })
+  const isExist= await seekerTable.findOne({email:email})
+  if(isExist){
+    res.json({
+    code: 302,
+    message:"This email is already Exist.",
+    data: []
+})
+  }else{
   const result = await data.save()
   res.json({
     code: 200,
+    message:"Registation SuccessFull !.",
     data: result
-  })
+  })}
 })
 seekerRoute.post("/seeker-login", async (req, res) => {
   const { email, password } = req.body;

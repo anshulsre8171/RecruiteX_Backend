@@ -17,11 +17,19 @@ recruiterRoute.post("/recruiter-register",async(req,res)=>{
         }
     })
    const data=  new recruiterTable({name: name,email:email,contact:contact,password:password,location:location,logo:logo.name})
+  const isExist= await seekerTable.findOne({email:email})
+  if(isExist){
+    res.json({
+    code: 302,
+    message:"This email is already Exist.",
+    data: []
+})
+  }else{
    const result= await data.save()
        res.json({
         code :200,
         data:result
-       })
+       })}
 })
 recruiterRoute.post("/recruiter-login", async (req, res) => {
     const {email,password}=req.body;

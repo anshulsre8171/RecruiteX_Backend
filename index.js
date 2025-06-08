@@ -10,7 +10,7 @@ const { AdminRoute } = require('./routes/AdminRoute')
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'https://recruite-x-front-end-ify8.vercel.app', // frontend URL
+  origin: '*', // frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
@@ -20,7 +20,7 @@ app.use(expressFileupload())
 
 
 const DbConnect = async () => {
-    // const con = await mongoose.connect("mongodb://localhost:27017/recruitex");
+    //const con = await mongoose.connect("mongodb://localhost:27017/recruitex");
      const con = await mongoose.connect(process.env.MONGODB_URI)
     if (con) {
         console.log("Connected to MongoDB...");

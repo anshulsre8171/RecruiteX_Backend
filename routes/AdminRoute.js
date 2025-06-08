@@ -116,4 +116,23 @@ AdminRoute.put("/admin-recruiterblock/:_id",async(req,res)=>{
   })
 })
 
+AdminRoute.delete(`/deleterec/:_id`,async(req,res)=>{
+  const _id=req.params._id
+  const result=await recruiterTable.deleteOne({_id:_id})
+    res.json({
+    code:200,
+    message:"Data Delete Successfull",
+    data:result
+  })
+})
+
+AdminRoute.delete(`/deletesec/:_id`,async(req,res)=>{
+  const _id=req.params._id
+  const result=await recruiterTable.deleteOne({_id:_id})
+    res.json({
+    code:200,
+    message:"Data Delete Successfull",
+    data:result
+  })
+})
  module.exports={AdminRoute}
