@@ -10,7 +10,7 @@ const { AdminRoute } = require('./routes/AdminRoute')
 const app = express();
 app.use(express.json());
 app.use(cors({
-  origin: 'https://recruite-x-front-end-ify8.vercel.app/', // frontend URL
+  origin: 'https://recruite-x-front-end-ify8.vercel.app', // frontend URL
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
